@@ -1,0 +1,139 @@
+{
+    "command_reposition": {
+        "s": {
+            "state": "double",
+            "sigma": "double",
+            "aircraft_velocity": "double"
+        },
+        "x": {
+            "pilot_takeover": "bool",
+            "pilot_handover": "bool",
+            "request_reposition": "bool",
+            "aircraft_state": "double",
+            "hover_criteria_met": "bool",
+            "start_mission": "bool"
+        },
+        "y": {
+            "cancel_hover": "bool",
+            "fcc_command_velocity": "double",
+            "stabilize": "bool",
+            "lp_criteria_met": "bool",
+            "request_aircraft_state": "bool",
+            "update_boss": "bool",
+            "update_gcs": "bool",
+            "set_mission_monitor_status": "bool"
+        },
+        "delta_int": {
+            "state == 3.0": {
+                "state": "4.0",
+                "sigma": "inf"
+            },
+            "state == 5.0": {
+                "state": "6.0",
+                "sigma": "0.0"
+            },
+            "state == 6.0": {
+                "state": "7.0",
+                "sigma": "inf"
+            },
+            "state == 8.0": {
+                "state": "9.0",
+                "sigma": "inf"
+            },
+            "state == 10.0": {
+                "state": "3.0",
+                "sigma": "inf"
+            },
+            "otherwise": {}
+        },
+        "delta_ext": {
+            "pilot_takeover.bagSize() != 0": {
+                "state": "12.0",
+                "sigma": "inf"
+            },
+            "pilot_handover.bagSize() != 0": {
+                "state": "11.0",
+                "sigma": "inf"
+            },
+            "start_mission.bagSize() != 0": {
+                "state": "2.0",
+                "sigma": "inf"
+            },
+            "otherwise": {
+                "state == 2.0": {
+                    "request_reposition.bagSize() != 0": {
+                        "state": "3.0",
+                        "sigma": "0.0"
+                    }
+                },
+                "state == 4.0": {
+                    "aircraft_state.bagSize() != 0": {
+                        "state": "5.0",
+                        "sigma": "0.0"
+                    }
+                },
+                "state == 5.0": {
+                    "request_reposition.bagSize() != 0": {
+                        "state": "3.0",
+                        "sigma": "0.0"
+                    }
+                },
+                "state == 6.0": {
+                    "request_reposition.bagSize() != 0": {
+                        "state": "3.0",
+                        "sigma": "0.0"
+                    }
+                },
+                "state == 7.0": {
+                    "hover_criteria_met.bagSize() != 0": {
+                        "state": "8.0",
+                        "sigma": "0.0"
+                    },
+                    "request_reposition.bagSize() != 0": {
+                        "state": "10.0",
+                        "sigma": "0.0"
+                    }
+                },
+                "state == 8.0": {
+                    "request_reposition.bagSize() != 0": {
+                        "state": "10.0",
+                        "sigma": "0.0"
+                    }
+                }
+            }
+        },
+        "delta_con": {
+            "otherwise": {}
+        },
+        "lambda": {
+            "state == 3.0": {
+                "request_aircraft_state.addMessage": "true"
+            },
+            "state == 5.0": {
+                "fcc_command_velocity.addMessage": "aircraft_velocity"
+            },
+            "state == 6.0": {
+                "stabilize.addMessage": "true",
+                "set_mission_monitor_status.addMessage": "true",
+                "update_boss.addMessage": "true",
+                "update_gcs.addMessage": "true"
+            },
+            "state == 8.0": {
+                "lp_criteria_met.addMessage": "true"
+            },
+            "state == 10.0": {
+                "cancel_hover.addMessage": "true"
+            },
+            "otherwise": {}
+        },
+        "ta": {
+            "otherwise": {
+                "time_advance": "sigma"
+            }
+        }
+    },
+    "include_sets": [
+        "default_sets.json"
+    ],
+    "parameters": {}
+}
