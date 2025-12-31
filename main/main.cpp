@@ -1,5 +1,8 @@
 #include <limits>
+#include <map>
+#include <string>
 #include "include/Counter_Top.hpp"
+#include "include/axiom_logger.hpp"
 #include "cadmium/simulation/root_coordinator.hpp"
 #include "cadmium/simulation/logger/stdout.hpp"
 #include "cadmium/simulation/logger/csv.hpp"
@@ -11,7 +14,8 @@ int main(int argc, char* argv[]){
 
 	auto rootCoordinator = RootCoordinator(counter_top);
 
-	rootCoordinator.setLogger<CSVLogger>("../simulation_results/counter_test.csv",",");
+	std::map<std::string, std::string> modelAxiomPaths = {{"counter","../main/model_axioms/counter.p"}};
+	rootCoordinator.setLogger<AxiomLogger>("../simulation_results/counter_test.txt","../vampire",modelAxiomPaths);
 
 	rootCoordinator.start();
 	rootCoordinator.simulate(30.0);
